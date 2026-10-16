@@ -1,0 +1,26 @@
+name: Validate Trading OS
+on:
+  pull_request:
+  push:
+    branches: [main, feature/1rok-research-lab]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: package.json
+      - name: Install packages
+        run: npm install --no-audit --no-fund
+      - name: Research engine tests
+        run: npm run test:research
+      - name: TypeScript
+        run: npx tsc --noEmit
+      - name: Production build
+        run: npm run build
