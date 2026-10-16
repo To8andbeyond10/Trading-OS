@@ -11,6 +11,8 @@ This milestone uses an **original implementation** of a transparent scoring demo
 - 1rok provides a Bun/TypeScript CLI rather than a Next.js website.
 - Its `run` path creates JSON portfolio-research artifacts, separate from its `execute` path that can send Alpaca orders when live mode is explicitly enabled.
 - It has a local Zod-validated tool registry, specialist agents, provider adapters and data services (Alpaca, Yahoo Finance, FRED, Tavily).
+- **Execution-label caveat in this inspected revision:** the CLI names its opt-in flag `--live`, but `getCredentialsForModel()` in `src/harness/core/order-executor.ts` hardcodes `https://paper-api.alpaca.markets`, and default `execute` is a dry run. The README and CLI warning language do not fully describe the actual execution target. Do not reuse these labels or assume live-broker support without an independent code audit.
+- The README describes parallel analysis, but the inspected pipeline currently sets `agentConcurrency = 1`; real throughput/cost must be benchmarked before designing any hosted orchestration.
 - The pipeline coordinates macro context, screening, six analytical disciplines, synthesis and portfolio construction.
 - It currently saves artifacts to local disk and expects service credentials and an appropriate runtime; lifting the CLI into a serverless request handler would be unsafe and unreliable for multi-minute operations.
 
